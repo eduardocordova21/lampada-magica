@@ -10,9 +10,8 @@ import SwiftUI
 struct ContentView: View {
         
     @State var stateLightBuld: Bool = false
-    @State var potenciaLightBuld: Double = 0
+    @State var potenciaLightBuld: Double = 0.1
     @State var disablePotenciaSlider: Bool = true
-    @State var lightBulbYellow: Color = Color.yellow
     
     var body: some View {
         
@@ -39,7 +38,7 @@ struct ContentView: View {
                         Text("Ligar")
                     }
                 }.onChange(of: stateLightBuld) { state in
-                    potenciaLightBuld = state ? 100.0 : 0
+                    potenciaLightBuld = state ? 100 : 0
                     disablePotenciaSlider = !state
                 }
             }
@@ -49,21 +48,16 @@ struct ContentView: View {
                 
                 HStack(){
                         Slider(
-                            value: $potenciaLightBuld,
-                            in: 0...100,
-                            step: 1
+                            value: stateLightBuld ?  $potenciaLightBuld : .constant(0)
                         )
                         .disabled(disablePotenciaSlider)
-                        .onChange(of: potenciaLightBuld) { value in
-                            lightBulbYellow.opacity(value)
-                        }
                     
-                        Text(String(format: "%.0f", potenciaLightBuld) + "%")
+                    Text("\(stateLightBuld ? potenciaLightBuld * 100 : 0.0, specifier: "%.0f")%")
                 }
             }
         }
         .padding()
-        .background(stateLightBuld ? lightBulbYellow : Color.white)
+        .background(stateLightBuld ? Color.yellow.opacity(potenciaLightBuld) : Color.white)
         
     }
 }
